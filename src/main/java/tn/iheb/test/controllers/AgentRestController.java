@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.iheb.test.entities.Agent;
+import tn.iheb.test.repositories.AgentRepository;
 import tn.iheb.test.services.AgentService;
 
 @RestController
@@ -25,6 +25,8 @@ public class AgentRestController {
 	
 	@Autowired
 	AgentService agentService;
+	
+	AgentRepository repo;
 	
 	@GetMapping("/agents")
 	@ResponseBody
@@ -40,8 +42,9 @@ public class AgentRestController {
 	
 	@PutMapping("/{name}")
 	@ResponseBody
-	public Agent updateAgent(@RequestBody Agent agent) {
-		return agentService.updateAgent(agent);
+	public Agent updateAgent(@PathVariable("name") String name, @RequestBody Agent agent) throws Exception {
+
+		return agentService.updateAgent(agent,name);
 		}
 	
 	@DeleteMapping("/{id}")

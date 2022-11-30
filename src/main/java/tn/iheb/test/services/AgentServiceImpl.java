@@ -2,6 +2,8 @@ package tn.iheb.test.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +26,10 @@ public class AgentServiceImpl implements AgentService {
 	}
 
 	@Override
-	public Agent updateAgent(Agent a) {
-		return agentRepository.save(a);
+	@Transactional
+	public Agent updateAgent(Agent a, String name) {
+		Agent agentUpdated =  this.agentRepository.findByname(name).orElseThrow(() -> new IllegalStateException("Agent with "+ name + " name does not exist"));
+		return this.agentRepository.save(a);
 	}
 
 	@Override
@@ -42,5 +46,6 @@ public class AgentServiceImpl implements AgentService {
 	public Agent getAgent(Long id) {
 		return agentRepository.findById(id).get();
 	}
+
 
 }
